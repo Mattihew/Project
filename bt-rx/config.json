@@ -1,0 +1,8 @@
+{
+  "id" : 1,
+  "serviceUUID" : "3558a925463b43278859d565b478a8c4",
+  "rabbit" : {
+    "url" : "amqp://demo:demo@localhost",
+    "exchange" : "rx"
+  }
+}

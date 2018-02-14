@@ -1,11 +1,23 @@
 var noble = require('noble');
-var ignore = ['48d6d5ef5178', 'e4f0421d6ac2', '807abf11e20c', '5460095ffb07', '5460097fc0c7'];
+var amqp = require('amqplib/callback_api');
+var config = require('./config.json');
+
+var channel;
+amqp.connect(config.rabbit.url, function(err, conn)
+{
+    return conn.createChannel(function (err, ch)
+    {
+        channel = ch;
+        channel.assertExchange(config.rabbit.exchange, 'fanout', {durable: false});
+        channel.publish(config.rabbit.exchange, '', Buffer.from('hello world', 'UTF-8'));
+    });
+});
 
 noble.on('stateChange', function(state)
 {
     if (state === 'poweredOn')
     {
-        noble.startScanning();
+        noble.startScanning([config.serviceUUID], true);
     }
     else
     {
@@ -15,11 +27,16 @@ noble.on('stateChange', function(state)
 
 noble.on('discover', function(perf)
 {
-    if(ignore.indexOf(perf.id) === -1)
+    console.log('id: ' + perf.id);
+    console.log("name: " + perf.advertisement.localName);
+    console.log('uuid: '+ perf.advertisement.serviceUuids);
+    console.log('RSSI: ' + perf.rssi);
+    console.log('TX: ' + perf.advertisement.txPowerLevel);
+    console.log('address: ' + perf.address);
+    console.log('------------------------');
+    if (typeof channel !== 'undefined')
     {
-        console.log('id: ' + perf.id);
-        console.log('RSSI: ' + perf.rssi);
-        console.log('address: ' + perf.address);
-        console.log('------------------------');
+        var data = {id: config.id, device: perf.id, rssi: perf.rssi};
+        channel.publish(config.rabbit.exchange, '', Buffer.from(JSON.stringify(data), 'UTF-8'));
     }
 });
