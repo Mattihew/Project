@@ -1,3 +1,4 @@
+import model.Vertex;
 import rabbit.RabbitListener;
 import services.SingleStationService;
 
@@ -11,6 +12,6 @@ public class main
         final RabbitListener listener =
                 new RabbitListener("192.168.0.185", "demo","demo", "rx");
         listener.start();
-        listener.addService(new SingleStationService());
+        listener.addService(new SingleStationService(new Vertex("1")));
     }
 }

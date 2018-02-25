@@ -1,5 +1,7 @@
 package model;
 
+import model.edge.Edge;
+
 public class Triangle
 {
     private final Edge[] edges = new Edge[3];

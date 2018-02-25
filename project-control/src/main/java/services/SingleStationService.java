@@ -1,53 +1,59 @@
 package services;
 
-import actions.Action;
 import actions.Webhook;
-import model.Edge;
+import model.Vertex;
+import model.edge.Edge;
+import model.edge.PeripheralEdge;
+import model.edge.StationEdge;
 
 public class SingleStationService implements Service
 {
-    private String stationId;
+    private final Vertex station;
 
     private Webhook webhook = new Webhook("c_6XVf_JZVQKfX_4_et0TC");
 
     private State state = new State(2);
     private boolean oldState = false;
 
-    public SingleStationService()
+    public SingleStationService(final Vertex stationId)
     {
-        super();
-    }
-
-    public SingleStationService(final String stationId)
-    {
-        this.stationId = stationId;
+        this.station = stationId;
     }
 
     @Override
-    public void addEdge(final Edge edge)
+    public void addPeripheralEdge(final PeripheralEdge edge)
     {
-        if (edge.getDistance() > 45)
+        if (edge.getStation().equals(this.station))
         {
-            this.state.setValue(false);
-        }
-        else if (edge.getDistance() > 40)
-        {
-            this.state.decrement();
-        }
-        else
-        {
-            this.state.increment();
-        }
+            if (edge.getDistance() > 45)
+            {
+                this.state.setValue(false);
+            }
+            else if (edge.getDistance() > 40)
+            {
+                this.state.decrement();
+            }
+            else
+            {
+                this.state.increment();
+            }
 
-        if (state.getValue() && !oldState)
-        {
-            webhook.trigger("lights_on");
+            if (state.getValue() && !oldState)
+            {
+                webhook.trigger("lights_on");
+            }
+            else if (!state.getValue() && oldState)
+            {
+                webhook.trigger("lights_off");
+            }
+            this.oldState = this.state.getValue();
+            System.out.println(edge);
         }
-        else if (!state.getValue() && oldState)
-        {
-            webhook.trigger("lights_off");
-        }
-        this.oldState = this.state.getValue();
-        System.out.println(edge);
+    }
+
+    @Override
+    public void addStationEdge(final StationEdge edge)
+    {
+        //NOOP
     }
 }

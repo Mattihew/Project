@@ -4,8 +4,9 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import model.Edge;
+import model.edge.Edge;
 import model.Vertex;
+import model.edge.PeripheralEdge;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import services.Service;
@@ -46,14 +47,14 @@ public class ServiceDelegatingConsumer extends DefaultConsumer
 
         if (!this.services.isEmpty())
         {
-            final Edge newEdge = new Edge(
-                    new Vertex(String.valueOf(value.getInt("id"))),
+            final PeripheralEdge newEdge = new PeripheralEdge(
                     new Vertex(value.getString("device")),
+                    new Vertex(String.valueOf(value.getInt("id"))),
                     -value.getInt("rssi")-50);
 
             for(Service service : this.services)
             {
-                service.addEdge(newEdge);
+                service.addPeripheralEdge(newEdge);
             }
         }
 

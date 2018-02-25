@@ -17,8 +17,6 @@ public class Vertex
     @Override
     public boolean equals(final Object obj)
     {
-        if (obj == this) return true;
-        if (!(obj instanceof Vertex)) return false;
-        return this.name.equals(((Vertex) obj).name);
+        return obj == this || obj instanceof Vertex && this.name.equals(((Vertex) obj).name);
     }
 }
