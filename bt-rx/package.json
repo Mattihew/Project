@@ -6,8 +6,9 @@
     "start": "sudo node --debug ./index.js"
   },
   "dependencies": {
+    "amqplib": "~0.5.2",
     "debug": "~2.6.9",
     "noble": "~1.9.0",
-    "amqplib": "~0.5.2"
+    "node-cleanup": "~2.1.2"
   }
 }

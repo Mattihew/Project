@@ -1,14 +1,20 @@
 var noble = require('noble');
-var amqp = require('amqplib/callback_api');
+var amqp = require('amqplib');
+var nodeCleanup = require('node-cleanup');
 var config = require('./config.json');
 
 var channel;
-amqp.connect(config.rabbit.url, function(err, conn)
+amqp.connect(config.rabbit.url)
+.then(function(conn)
 {
-    return conn.createChannel(function (err, ch)
-    {
-        ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false});
-        ch.publish(config.rabbit.exchange, '', Buffer.from('hello world', 'UTF-8'));
+    process.once('SIGINT', conn.close.bind(conn));
+    return conn.createChannel();
+})
+.then(function (ch)
+{
+    return ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false})
+    .then(function (ex) {
+        ch.publish(ex.exchange, '', Buffer.from('hello world', 'UTF-8'));
         channel = ch;
     });
 });
@@ -23,6 +29,12 @@ noble.on('stateChange', function(state)
     {
         noble.stopScanning();
     }
+});
+nodeCleanup(function()
+{
+    noble.stopScanning();
+},{
+    ctrl_C: "Exited"
 });
 
 noble.on('discover', function(perf)
