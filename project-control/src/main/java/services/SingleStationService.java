@@ -1,16 +1,25 @@
 package services;
 
+import actions.Action;
 import actions.Webhook;
+import model.Point;
+import model.SingleStationZone;
 import model.Vertex;
+import model.Zone;
 import model.edge.Edge;
-import model.edge.PeripheralEdge;
-import model.edge.StationEdge;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SingleStationService implements Service
 {
     private final Vertex station;
 
-    private Webhook webhook = new Webhook("c_6XVf_JZVQKfX_4_et0TC");
+
+
+    final Map<SingleStationZone, Action> triggers = new HashMap<>();
 
     private State state = new State(2);
     private boolean oldState = false;
@@ -18,42 +27,45 @@ public class SingleStationService implements Service
     public SingleStationService(final Vertex stationId)
     {
         this.station = stationId;
-    }
-
-    @Override
-    public void addPeripheralEdge(final PeripheralEdge edge)
-    {
-        if (edge.getStation().equals(this.station))
+        try
         {
-            if (edge.getDistance() > 45)
-            {
-                this.state.setValue(false);
-            }
-            else if (edge.getDistance() > 40)
-            {
-                this.state.decrement();
-            }
-            else
-            {
-                this.state.increment();
-            }
-
-            if (state.getValue() && !oldState)
-            {
-                webhook.trigger("lights_on");
-            }
-            else if (!state.getValue() && oldState)
-            {
-                webhook.trigger("lights_off");
-            }
-            this.oldState = this.state.getValue();
-            System.out.println(edge);
+            final Webhook webhook = new Webhook(new URL("https://maker.ifttt.com/trigger/lights_on/with/key/c_6XVf_JZVQKfX_4_et0TC"));
+            final Webhook webhook2 = new Webhook(new URL("https://maker.ifttt.com/trigger/lights_off/with/key/c_6XVf_JZVQKfX_4_et0TC"));
+            this.addTrigger(new SingleStationZone(this.station,0, 40), webhook);
+            this.addTrigger(new SingleStationZone(this.station,45), webhook2);
+        }
+        catch (final MalformedURLException e)
+        {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void addStationEdge(final StationEdge edge)
+    public void addPeripheralEdge(final Edge edge)
     {
-        //NOOP
+        if (edge.getStation().equals(this.station))
+        {
+            checkTriggers(new Point(edge));
+        }
+        else
+        {
+            //todo wrong station
+        }
+    }
+
+    public void addTrigger(final SingleStationZone zone, final Action action)
+    {
+        this.triggers.put(zone, action);
+    }
+
+    private void checkTriggers(final Point point)
+    {
+        for (final Map.Entry<SingleStationZone, Action> entry : this.triggers.entrySet())
+        {
+            if (entry.getKey().inRange(point).equals(Zone.State.IN))
+            {
+                entry.getValue().trigger();
+            }
+        }
     }
 }

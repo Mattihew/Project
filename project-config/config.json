@@ -1,0 +1,6 @@
+{
+  "rabbit" : {
+    "url" : "amqp://demo:demo@192.168.0.100",
+    "ex" : "testQ"
+  }
+}

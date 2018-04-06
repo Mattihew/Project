@@ -8,32 +8,19 @@ import java.util.concurrent.TimeoutException;
 
 public class RabbitListener
 {
-    private String host;
-    private String username;
-    private String password;
     private String exchange;
 
     private ServiceDelegatingConsumer consumer;
 
-    public RabbitListener(final String host, final String username, final String password, final String exchange)
+    public RabbitListener(final String exchange)
     {
-        this.host = host;
-        this.username = username;
-        this.password = password;
         this.exchange = exchange;
-
     }
 
-    public void start() throws IOException, TimeoutException
+    public void start(final Connection connection) throws IOException, TimeoutException
     {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(this.host);
-        factory.setUsername(this.username);
-        factory.setPassword(this.password);
-
-        Connection connection = factory.newConnection();
         final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(this.exchange, BuiltinExchangeType.FANOUT, false);
+        channel.exchangeDeclare(this.exchange, BuiltinExchangeType.FANOUT, false, true, null);
 
         final String queue = channel.queueDeclare().getQueue();
         channel.queueBind(queue, this.exchange, "");

@@ -2,7 +2,7 @@
   "id" : 1,
   "serviceUUID" : ["3558a925463b43278859d565b478a8c4"],
   "rabbit" : {
-    "url" : "amqp://demo:demo@localhost",
+    "url" : "amqp://demo:demo@192.168.0.100",
     "exchange" : "rx"
   }
 }

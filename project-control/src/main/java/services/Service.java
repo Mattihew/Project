@@ -1,11 +1,8 @@
 package services;
 
-import model.edge.PeripheralEdge;
-import model.edge.StationEdge;
+import model.edge.Edge;
 
 public interface Service
 {
-    public void addPeripheralEdge(final PeripheralEdge edge);
-
-    public void addStationEdge(final StationEdge edge);
+    public void addPeripheralEdge(final Edge edge);
 }

@@ -20,7 +20,24 @@ public class Point
 
     public Point(final Collection<Edge> edges)
     {
-        this.edges = new ArrayList<>(edges);
+        this.edges = Collections.unmodifiableCollection(new ArrayList<>(edges));
+    }
+
+    public int edgeCount()
+    {
+        return edges.size();
+    }
+
+    public Edge getEdge(final Vertex station)
+    {
+        for (final Edge edge : this.edges)
+        {
+            if (edge.getStation().equals(station))
+            {
+                return edge;
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,18 +1,31 @@
+'use strict';
 var noble = require('noble');
 var amqp = require('amqplib');
 var nodeCleanup = require('node-cleanup');
+
 var config = require('./config.json');
+var Log = require('log');
+var nobelLogger = new Log('debug');
+var amqpLogger = new Log('debug');
+
+var serialNumber;
+require('serial-number')(function(e,v)
+{
+    serialNumber = e ? config.id : v;
+    amqpLogger.debug('serial-number: ' + serialNumber);
+});
 
 var channel;
 amqp.connect(config.rabbit.url)
 .then(function(conn)
 {
     process.once('SIGINT', conn.close.bind(conn));
+    amqpLogger.debug("sigint bound");
     return conn.createChannel();
 })
 .then(function (ch)
 {
-    return ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false})
+    return ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false, autoDelete:true})
     .then(function (ex) {
         ch.publish(ex.exchange, '', Buffer.from('hello world', 'UTF-8'));
         channel = ch;
@@ -39,16 +52,16 @@ nodeCleanup(function()
 
 noble.on('discover', function(perf)
 {
-    //console.log('id: ' + perf.id);
-    console.log("device: " + perf.advertisement.localName);
-    //console.log('uuid: '+ perf.advertisement.serviceUuids);
-    console.log('RSSI: ' + perf.rssi);
-    console.log('dist: ' + toDist(perf.rssi));
-    console.log('TX: ' + perf.advertisement.txPowerLevel);
-    console.log('------------------------');
+    //nobelLogger('id: %s', perf.id);
+    nobelLogger.debug('device: %s', perf.advertisement.localName);
+    //nobelLogger('uuid: %s', perf.advertisement.serviceUuids);
+    nobelLogger.debug('RSSI: %s', perf.rssi);
+    nobelLogger.debug('dist: %s', toDist(perf.rssi));
+    nobelLogger.debug('TX: %s', perf.advertisement.txPowerLevel);
+    nobelLogger.debug('------------------------');
     if (typeof channel !== 'undefined')
     {
-        var data = {id: config.id, device: perf.advertisement.localName, rssi: perf.rssi, time: Date.now()};
+        var data = {id: serialNumber, device: perf.advertisement.localName, rssi: perf.rssi, time: Date.now()};
         channel.publish(config.rabbit.exchange, '', Buffer.from(JSON.stringify(data), 'UTF-8'));
     }
 });
