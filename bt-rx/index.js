@@ -25,7 +25,7 @@ amqp.connect(config.rabbit.url)
 })
 .then(function (ch)
 {
-    return ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false, autoDelete:true})
+    return ch.assertExchange(config.rabbit.exchange, 'fanout', {durable: false})
     .then(function (ex) {
         ch.publish(ex.exchange, '', Buffer.from('hello world', 'UTF-8'));
         channel = ch;
@@ -61,7 +61,7 @@ noble.on('discover', function(perf)
     nobelLogger.debug('------------------------');
     if (typeof channel !== 'undefined')
     {
-        var data = {id: serialNumber, device: perf.advertisement.localName, rssi: perf.rssi, time: Date.now()};
+        var data = {id: serialNumber, device: perf.advertisement.localName || 'undefined', rssi: perf.rssi, time: Date.now()};
         channel.publish(config.rabbit.exchange, '', Buffer.from(JSON.stringify(data), 'UTF-8'));
     }
 });

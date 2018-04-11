@@ -2,7 +2,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import model.Vertex;
 import rabbit.RabbitListener;
-import services.SingleStationService;
+import services.StationService;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -17,9 +17,8 @@ public class main
         factory.setPassword("demo");
         Connection connection = factory.newConnection();
 
-        final RabbitListener listener =
-                new RabbitListener("rx");
+        final RabbitListener listener = new RabbitListener("rx");
         listener.start(connection);
-        listener.addService(new SingleStationService(new Vertex("1")));
+        listener.addService(new StationService(new Vertex("00000000acb63522")));
     }
 }

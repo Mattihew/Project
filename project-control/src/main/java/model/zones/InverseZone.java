@@ -1,8 +1,10 @@
-package model;
+package model.zones;
+
+import model.Point;
 
 public class InverseZone extends Zone
 {
-    private Zone zone;
+    private final Zone zone;
 
     public InverseZone(final Zone zone)
     {

@@ -48,7 +48,7 @@ public class ServiceDelegatingConsumer extends DefaultConsumer
         {
             final Edge newEdge = new Edge(
                     new Vertex(value.getString("device")),
-                    new Vertex(String.valueOf(value.getInt("id"))),
+                    new Vertex(value.getString("id")),
                     -value.getInt("rssi")-50);
 
             for(Service service : this.services)

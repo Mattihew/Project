@@ -20,7 +20,7 @@ public class RabbitListener
     public void start(final Connection connection) throws IOException, TimeoutException
     {
         final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(this.exchange, BuiltinExchangeType.FANOUT, false, true, null);
+        channel.exchangeDeclare(this.exchange, BuiltinExchangeType.FANOUT, false);
 
         final String queue = channel.queueDeclare().getQueue();
         channel.queueBind(queue, this.exchange, "");

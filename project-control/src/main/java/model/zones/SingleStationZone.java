@@ -1,5 +1,7 @@
-package model;
+package model.zones;
 
+import model.Point;
+import model.Vertex;
 import model.edge.Edge;
 
 import java.util.Objects;
@@ -7,17 +9,19 @@ import java.util.Objects;
 public class SingleStationZone extends Zone
 {
     private final Vertex station;
+    private final Vertex peripheral;
     private final int minDist;
     private final int maxDist;
 
-    public SingleStationZone(final Vertex station, final int minDist)
+    public SingleStationZone(final Vertex station, final Vertex peripheral, final int minDist)
     {
-        this(station, minDist, Integer.MAX_VALUE);
+        this(station, peripheral, minDist, Integer.MAX_VALUE);
     }
 
-    public SingleStationZone(final Vertex station, final int minDist, final int maxDist)
+    public SingleStationZone(final Vertex station, final Vertex peripheral, final int minDist, final int maxDist)
     {
         this.station = station;
+        this.peripheral = peripheral;
         this.minDist = minDist;
         this.maxDist = maxDist;
     }
@@ -25,8 +29,16 @@ public class SingleStationZone extends Zone
     @Override
     public State inRange(final Point point)
     {
+        if (!point.getPeripheral().equals(this.peripheral))
+        {
+            return State.NULL;
+        }
         final Edge edge = point.getEdge(this.station);
-        if (edge != null)
+        if (edge == null)
+        {
+            return State.NULL;
+        }
+        else
         {
             if(edge.getDistance() > this.minDist && edge.getDistance() < this.maxDist)
             {
@@ -36,10 +48,6 @@ public class SingleStationZone extends Zone
             {
                 return State.OUT;
             }
-        }
-        else
-        {
-            return State.NULL;
         }
     }
 
