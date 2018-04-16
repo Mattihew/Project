@@ -12,7 +12,7 @@ public class PointCache
 
     public static Point getPoint(final Vertex peripheral)
     {
-        return points.get(peripheral);
+        return PointCache.points.get(peripheral);
     }
 
     public static Point toPoint (final Edge edge)
@@ -40,7 +40,7 @@ public class PointCache
             }
             newPoint = new Point(edges);
         }
-        points.put(newPoint.getPeripheral(), newPoint);
+        PointCache.points.put(newPoint.getPeripheral(), newPoint);
         return newPoint;
     }
 }

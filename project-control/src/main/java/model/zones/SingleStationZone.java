@@ -29,18 +29,14 @@ public class SingleStationZone extends Zone
     @Override
     public State inRange(final Point point)
     {
-        if (!point.getPeripheral().equals(this.peripheral))
+        if (point == null || !point.getPeripheral().equals(this.peripheral))
         {
             return State.NULL;
         }
         final Edge edge = point.getEdge(this.station);
-        if (edge == null)
+        if (edge != null)
         {
-            return State.NULL;
-        }
-        else
-        {
-            if(edge.getDistance() > this.minDist && edge.getDistance() < this.maxDist)
+            if(this.minDist <= edge.getDistance() && edge.getDistance() < this.maxDist)
             {
                 return State.IN;
             }
@@ -48,6 +44,10 @@ public class SingleStationZone extends Zone
             {
                 return State.OUT;
             }
+        }
+        else
+        {
+            return State.NULL;
         }
     }
 
@@ -57,12 +57,14 @@ public class SingleStationZone extends Zone
         if(obj == this) return true;
         if(!(obj instanceof SingleStationZone)) return false;
         return this.minDist == ((SingleStationZone) obj).minDist &&
-                this.maxDist == ((SingleStationZone) obj).maxDist;
+                this.maxDist == ((SingleStationZone) obj).maxDist &&
+                this.peripheral == ((SingleStationZone) obj).peripheral &&
+                this.station == ((SingleStationZone) obj).station;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(minDist, maxDist);
+        return Objects.hash(minDist, maxDist, peripheral, station);
     }
 }

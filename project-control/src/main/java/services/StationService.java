@@ -16,7 +16,7 @@ public class StationService implements Service
 {
     private final Vertex station;
 
-    final Map<SingleStationZone, Action> triggers = new HashMap<>();
+    final Map<Zone, Action> triggers = new HashMap<>();
 
     private State state = new State(2);
     private boolean oldState = false;
@@ -42,19 +42,21 @@ public class StationService implements Service
     {
         if(edge.getPeripheral().toString().equals("JinouBeacon"))
         System.out.println(edge.getDistance()); //todo remove
-        checkTriggers(PointCache.toPoint(edge));
+        final Point prevPoint = PointCache.getPoint(edge.getPeripheral());
+        checkTriggers(PointCache.toPoint(edge), prevPoint);
     }
 
-    public void addTrigger(final SingleStationZone zone, final Action action)
+    public void addTrigger(final Zone zone, final Action action)
     {
         this.triggers.put(zone, action);
     }
 
-    private void checkTriggers(final Point point)
+    private void checkTriggers(final Point newPoint, final Point prevPoint)
     {
-        for (final Map.Entry<SingleStationZone, Action> entry : this.triggers.entrySet())
+        for (final Map.Entry<Zone, Action> entry : this.triggers.entrySet())
         {
-            if (entry.getKey().inRange(point).equals(Zone.State.IN))
+            final Zone zone = entry.getKey();
+            if (zone.inRange(newPoint).equals(Zone.State.IN) && !zone.inRange(prevPoint).equals(Zone.State.IN))
             {
                 entry.getValue().trigger();
             }
