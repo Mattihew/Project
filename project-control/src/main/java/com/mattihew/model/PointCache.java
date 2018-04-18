@@ -1,6 +1,6 @@
-package model;
+package com.mattihew.model;
 
-import model.edge.Edge;
+import com.mattihew.model.edge.Edge;
 
 import java.util.*;
 

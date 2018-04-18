@@ -1,4 +1,4 @@
-package model;
+package com.mattihew.model;
 
 import java.util.Objects;
 

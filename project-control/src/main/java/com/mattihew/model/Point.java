@@ -1,6 +1,6 @@
-package model;
+package com.mattihew.model;
 
-import model.edge.Edge;
+import com.mattihew.model.edge.Edge;
 
 import java.util.*;
 
@@ -22,8 +22,7 @@ public class Point
 
     public Point(final Collection<Edge> edges)
     {
-        this.edges = Collections.unmodifiableCollection(new ArrayList<>(edges));
-        for (final Edge edge : this.edges)
+        for (final Edge edge : edges)
         {
             if (this.peripheral == null)
             {
@@ -34,7 +33,7 @@ public class Point
                 throw new IllegalArgumentException("all edges have to be for the same peripheral");
             }
         }
-
+        this.edges = Collections.unmodifiableCollection(new ArrayList<>(edges));
     }
 
     public Vertex getPeripheral()
@@ -66,6 +65,13 @@ public class Point
         if (!(obj instanceof Point)) return false;
 
         final Point other = (Point) obj;
-        return this.edges.size() == other.edges.size() && this.edges.containsAll(other.edges);
+        return this.peripheral.equals(other.peripheral) &&
+               this.edges.size() == other.edges.size() && this.edges.containsAll(other.edges);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(edges, peripheral);
     }
 }

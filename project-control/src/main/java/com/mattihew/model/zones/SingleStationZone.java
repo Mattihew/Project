@@ -1,8 +1,8 @@
-package model.zones;
+package com.mattihew.model.zones;
 
-import model.Point;
-import model.Vertex;
-import model.edge.Edge;
+import com.mattihew.model.Point;
+import com.mattihew.model.Vertex;
+import com.mattihew.model.edge.Edge;
 
 import java.util.Objects;
 

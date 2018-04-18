@@ -1,6 +1,6 @@
-package model.zones;
+package com.mattihew.model.zones;
 
-import model.Point;
+import com.mattihew.model.Point;
 
 import java.util.Arrays;
 import java.util.Collection;

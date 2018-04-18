@@ -1,4 +1,4 @@
-package actions;
+package com.mattihew.actions;
 
 public interface Action
 {

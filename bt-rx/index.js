@@ -5,7 +5,7 @@ var nodeCleanup = require('node-cleanup');
 
 var config = require('./config.json');
 var Log = require('log');
-var nobelLogger = new Log('debug');
+var nobleLogger = new Log('debug');
 var amqpLogger = new Log('debug');
 
 var serialNumber;
@@ -50,15 +50,26 @@ nodeCleanup(function()
     ctrl_C: "Exited"
 });
 
+var perfs = {};
 noble.on('discover', function(perf)
 {
-    //nobelLogger('id: %s', perf.id);
-    nobelLogger.debug('device: %s', perf.advertisement.localName);
-    //nobelLogger('uuid: %s', perf.advertisement.serviceUuids);
-    nobelLogger.debug('RSSI: %s', perf.rssi);
-    nobelLogger.debug('dist: %s', toDist(perf.rssi));
-    nobelLogger.debug('TX: %s', perf.advertisement.txPowerLevel);
-    nobelLogger.debug('------------------------');
+    if (!perfs.hasOwnProperty(perf.id))
+    {
+        nobleLogger.info('new device "%s" found', perf.advertisement.localName);
+        perfs[perf.id] = perf.advertisement.localName;
+    }
+    if(process.argv.length > 2 &&
+       process.argv[2].indexOf(perf.advertisement.localName) !== -1)
+    {
+        //nobelLogger('id: %s', perf.id);
+        nobleLogger.debug('device: %s', perf.advertisement.localName);
+        //nobelLogger('uuid: %s', perf.advertisement.serviceUuids);
+        nobleLogger.debug('RSSI: %s', perf.rssi);
+        nobleLogger.debug('dist: %s', toDist(perf.rssi));
+        nobleLogger.debug('TX: %s', perf.advertisement.txPowerLevel);
+        nobleLogger.debug('------------------------');
+    }
+
     if (typeof channel !== 'undefined')
     {
         var data = {id: serialNumber, device: perf.advertisement.localName || 'undefined', rssi: perf.rssi, time: Date.now()};

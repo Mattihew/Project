@@ -1,7 +1,7 @@
-package rabbit;
+package com.mattihew.rabbit;
 
 import com.rabbitmq.client.*;
-import services.Service;
+import com.mattihew.services.Service;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

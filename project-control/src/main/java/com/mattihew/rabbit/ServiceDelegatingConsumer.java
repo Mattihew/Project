@@ -1,18 +1,19 @@
-package rabbit;
+package com.mattihew.rabbit;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import model.edge.Edge;
-import model.Vertex;
+import com.mattihew.model.edge.Edge;
+import com.mattihew.model.Vertex;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import services.Service;
+import com.mattihew.services.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -42,14 +43,15 @@ public class ServiceDelegatingConsumer extends DefaultConsumer
     {
         final JSONObject value = new JSONObject(new JSONTokener(new InputStreamReader(
                 new ByteArrayInputStream(body),
-                Objects.toString(properties.getContentEncoding(),"UTF-8"))));
+                Objects.toString(properties.getContentEncoding(), StandardCharsets.UTF_8.name()))));
 
         if (!this.services.isEmpty())
         {
             final Edge newEdge = new Edge(
                     new Vertex(value.getString("device")),
                     new Vertex(value.getString("id")),
-                    -value.getInt("rssi")-50);
+                    -value.getInt("rssi")-50,
+                    value.optLong("time", System.currentTimeMillis()));
 
             for(Service service : this.services)
             {

@@ -1,6 +1,6 @@
-package model.edge;
+package com.mattihew.model.edge;
 
-import model.Vertex;
+import com.mattihew.model.Vertex;
 
 public class Edge
 {
