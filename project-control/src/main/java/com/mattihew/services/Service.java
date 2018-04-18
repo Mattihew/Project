@@ -8,6 +8,7 @@ import com.mattihew.model.zones.Zone;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import static com.mattihew.model.zones.Zone.State.*;
 
 public class Service
 {
@@ -39,8 +40,8 @@ public class Service
         for (final Map.Entry<Zone, Action> entry : this.triggers.entrySet())
         {
             final Zone zone = entry.getKey();
-            if (zone.inRange(newPoint).equals(Zone.State.IN) &&
-               !zone.inRange(prevPoint).equals(Zone.State.IN))
+            if (zone.inRange(newPoint).equals(IN) &&
+               !zone.inRange(prevPoint).equals(IN))
             {
                 entry.getValue().trigger();
             }

@@ -1,6 +1,5 @@
 package com.mattihew;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -18,6 +17,11 @@ public class Props
         {
             e.printStackTrace();
         }
+    }
+
+    private Props() throws AssertionError
+    {
+        throw new AssertionError("Utility class should not be instantiated");
     }
 
     public static String getProp(final Key key)

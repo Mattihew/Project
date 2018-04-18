@@ -1,12 +1,16 @@
 package com.mattihew.actions;
 
-import java.io.*;
+import com.mattihew.Props;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import com.mattihew.Props;
+import static com.mattihew.Props.Key;
 
 public class HueAction implements Action
 {
@@ -17,8 +21,8 @@ public class HueAction implements Action
     {
         try
         {
-            this.url = new URL(Props.format(Props.Key.HueURL, light));
-            this.body = Props.format(Props.Key.HueBody, turnOn);
+            this.url = new URL(Props.format(Key.HueURL, light));
+            this.body = Props.format(Key.HueBody, turnOn);
         }
         catch (final MalformedURLException e)
         {
