@@ -10,19 +10,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import static com.mattihew.Props.Key;
+import static com.mattihew.Props.Key.*;
 
 public class HueAction implements Action
 {
     private URL url;
-    private String body;
+    private byte[] body;
 
     public HueAction(final int light, final boolean turnOn)
     {
         try
         {
-            this.url = new URL(Props.format(Key.HueURL, light));
-            this.body = Props.format(Key.HueBody, turnOn);
+            this.url = new URL(Props.format(HueURL, light));
+            this.body = Props.format(HueBody, turnOn).getBytes(StandardCharsets.UTF_8);
         }
         catch (final MalformedURLException e)
         {
@@ -37,13 +37,13 @@ public class HueAction implements Action
         try
         {
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("PUT");
-            //connection.setRequestProperty("Content-Length", Integer.toString(body.length()));
-            connection.setFixedLengthStreamingMode(body.length());
+            connection.setRequestMethod("PUT"); //NON-NLS
+            //connection.setRequestProperty("Content-Length", Integer.toString(body.length));
+            connection.setFixedLengthStreamingMode(body.length);
             connection.setDoOutput(true);
 
             final OutputStream out = connection.getOutputStream();
-            out.write(body.getBytes(StandardCharsets.UTF_8));
+            out.write(body);
             out.flush();
             out.close();
 

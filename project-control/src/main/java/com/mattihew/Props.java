@@ -11,7 +11,7 @@ public class Props
     {
         try
         {
-            propsFile.load(ClassLoader.getSystemResourceAsStream("config.properties")); //NON-NLS
+            Props.propsFile.load(ClassLoader.getSystemResourceAsStream("config.properties")); //NON-NLS
         }
         catch (final IOException e)
         {
@@ -42,7 +42,8 @@ public class Props
     public enum Key
     {
         HueURL("hue.url"),
-        HueBody("hue.body");
+        HueBody("hue.body"),
+        PointCacheMaxAge("pointCache.maxAge");
 
         private final String value;
         Key(final String s)

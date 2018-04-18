@@ -1,14 +1,27 @@
 package com.mattihew.model;
 
+import com.mattihew.Props;
 import com.mattihew.model.edge.Edge;
+import com.mattihew.services.Service;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import static com.mattihew.Props.Key.PointCacheMaxAge;
 
 public class PointCache
 {
-    private static long MAX_AGE = Long.MAX_VALUE;
-    private static final Map<Vertex, Point> points = new HashMap<>();
+    private static final long MAX_AGE = Long.valueOf(Props.getProp(PointCacheMaxAge));
+    private static final Map<Vertex, Point> points = Collections.synchronizedMap(new HashMap<Vertex, Point>());
 
+    private static final Collection<Service> services = new ArrayList<>();
+    private static final ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
+
+    static
+    {
+        ex.scheduleAtFixedRate(new CullEdges(), MAX_AGE, MAX_AGE, TimeUnit.MILLISECONDS);
+    }
 
     public static Point getPoint(final Vertex peripheral)
     {
@@ -42,5 +55,62 @@ public class PointCache
         }
         PointCache.points.put(newPoint.getPeripheral(), newPoint);
         return newPoint;
+    }
+
+    public static void addService(final Service service)
+    {
+        services.add(service);
+    }
+
+    private static class CullEdges implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            try
+            {
+                synchronized (points)
+                {
+                    for (final Iterator<Map.Entry<Vertex, Point>> j = points.entrySet().iterator(); j.hasNext();)
+                    {
+                        final Map.Entry<Vertex, Point> entry = j.next();
+                        final Point point = entry.getValue();
+                        if (System.currentTimeMillis() - point.getTime() > MAX_AGE)
+                        {
+                            final Collection<Edge> edges = new ArrayList<>(point.getEdges());
+                            for (final Iterator<Edge> i = edges.iterator(); i.hasNext();)
+                            {
+                                if (System.currentTimeMillis() - i.next().getTime() > MAX_AGE)
+                                {
+                                    i.remove();
+                                }
+                            }
+                            if (!edges.isEmpty())
+                            {
+                                final Point updatedPoint = new Point(edges);
+                                for (final Service service : services)
+                                {
+                                    service.addPeripheralPoint(updatedPoint);
+                                }
+                                entry.setValue(updatedPoint);
+                            }
+                            else
+                            {
+                                final Point emptyPoint = new Point(point.getPeripheral());
+                                for (final Service service : services)
+                                {
+                                    service.addPeripheralPoint(emptyPoint);
+                                }
+                                j.remove();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (final Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }

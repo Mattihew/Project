@@ -8,7 +8,7 @@ import com.mattihew.model.zones.Zone;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import static com.mattihew.model.zones.Zone.State.*;
+import static com.mattihew.model.zones.Zone.State.IN;
 
 public class Service
 {
@@ -20,9 +20,16 @@ public class Service
     public void addPeripheralEdge(final Edge edge)
     {
         if(edge.getPeripheral().toString().equals("JinouBeacon"))
+        //if(edge.getPeripheral().toString().equals("XT1580"))
         System.out.println(edge.getDistance()); //todo remove
         final Point prevPoint = PointCache.getPoint(edge.getPeripheral());
         checkTriggers(PointCache.toPoint(edge), prevPoint);
+    }
+
+    public void addPeripheralPoint(final Point point)
+    {
+        final Point prevPoint = PointCache.getPoint(point.getPeripheral());
+        checkTriggers(point, prevPoint);
     }
 
     public void addTrigger(final Zone zone, final Action action)

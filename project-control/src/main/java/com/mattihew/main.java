@@ -2,6 +2,8 @@ package com.mattihew;
 
 import com.mattihew.actions.Action;
 import com.mattihew.actions.HueAction;
+import com.mattihew.model.PointCache;
+import com.mattihew.model.zones.NullIncludedZone;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.mattihew.model.Vertex;
@@ -27,15 +29,17 @@ public class main
         final RabbitListener listener = new RabbitListener("rx");
         listener.start(connection);
         listener.addService(service);
+        PointCache.addService(service);
 
 
         final Vertex station = new Vertex("00000000acb63522");
         final Vertex peripheral = new Vertex("JinouBeacon");
+        //final Vertex peripheral = new Vertex("XT1580");
 
         final Zone zone = new SingleStationZone(station, peripheral,0, 30);
         final Action webhook = new HueAction(3, true);
 
-        final Zone zone2 = new SingleStationZone(station, peripheral,40);
+        final Zone zone2 = new NullIncludedZone(new SingleStationZone(station, peripheral,45));
         final Action webhook2 = new HueAction(3, false);
 
         service.addTrigger(zone, webhook);

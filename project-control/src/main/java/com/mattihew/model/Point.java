@@ -8,16 +8,19 @@ public class Point
 {
     private final Collection<Edge> edges;
     private Vertex peripheral;
+    private long time = System.currentTimeMillis();
+
+    public Point (final Vertex peripheral)
+    {
+        this.edges = Collections.emptySet();
+        this.peripheral = peripheral;
+    }
 
     public Point (final Edge edge)
     {
         this.edges = Collections.singleton(edge);
         this.peripheral = edge.getPeripheral();
-    }
-
-    public Point(final Edge... edges)
-    {
-        this(Arrays.asList(edges));
+        this.time = edge.getTime();
     }
 
     public Point(final Collection<Edge> edges)
@@ -31,6 +34,10 @@ public class Point
             else if (!this.peripheral.equals(edge.getPeripheral()))
             {
                 throw new IllegalArgumentException("all edges have to be for the same peripheral");
+            }
+            if (this.time > edge.getTime())
+            {
+                this.time = edge.getTime();
             }
         }
         this.edges = Collections.unmodifiableCollection(new ArrayList<>(edges));
@@ -56,6 +63,11 @@ public class Point
             }
         }
         return null;
+    }
+
+    public long getTime()
+    {
+        return this.time;
     }
 
     @Override
