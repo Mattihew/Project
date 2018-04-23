@@ -8,11 +8,10 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import static com.mattihew.Props.Key.PointCacheMaxAge;
 
 public class PointCache
 {
-    private static final long MAX_AGE = Long.valueOf(Props.getProp(PointCacheMaxAge));
+    private static final long MAX_AGE = Long.valueOf(Props.PointCacheMaxAge.getValue());
     private static final Map<Vertex, Point> points = Collections.synchronizedMap(new HashMap<Vertex, Point>());
 
     private static final Collection<Service> services = new ArrayList<>();

@@ -3,8 +3,21 @@ package com.mattihew;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Props
+public enum Props
 {
+    HueURL("hue.url"),
+    HueBody("hue.body"),
+    HueMethod("hue.method"),
+    PointCacheMaxAge("pointCache.maxAge"),
+
+    ZoneFactory_Type("ZoneFactory.type"),
+
+    SingleStationZone_Type("SingleStationZoneFactory.type"),
+    SingleStationZone_Station("SingleStationZoneFactory.station"),
+    SingleStationZone_Peripheral("SingleStationZoneFactory.peripheral"),
+    SingleStationZone_Min("SingleStationZoneFactory.min"),
+    SingleStationZone_Max("SingleStationZoneFactory.max");
+
     private static final Properties propsFile = new Properties();
 
     static
@@ -19,42 +32,30 @@ public class Props
         }
     }
 
-    private Props() throws AssertionError
+    private String key;
+
+    private Props(final String key)
     {
-        throw new AssertionError("Utility class should not be instantiated");
+        this.key = key;
     }
 
-    public static String getProp(final Key key)
+    public String getValue()
     {
-        return propsFile.getProperty(key.toString());
+        return Props.propsFile.getProperty(this.key);
     }
 
-    public static String getProp(final Key key, final String defaultValue)
+    public String getValue(final String defaultValue)
     {
-        return propsFile.getProperty(key.toString(), defaultValue);
+        return Props.propsFile.getProperty(this.key, defaultValue);
     }
 
-    public static String format(final Key key, final Object... values)
+    public String format(final Object... values)
     {
-        return String.format(Props.getProp(key), values);
+        return String.format(this.getValue(), values);
     }
 
-    public enum Key
+    public String toString()
     {
-        HueURL("hue.url"),
-        HueBody("hue.body"),
-        PointCacheMaxAge("pointCache.maxAge");
-
-        private final String value;
-        Key(final String s)
-        {
-            this.value = s;
-        }
-
-        @Override
-        public String toString()
-        {
-            return this.value;
-        }
+        return this.getValue();
     }
 }
