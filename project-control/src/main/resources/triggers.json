@@ -1,0 +1,19 @@
+[{
+  "action": "test",
+  "zone": {
+    "type": "SingleStationZone",
+    "station": "00000000acb63522",
+    "peripheral": "JinouBeacon",
+    "min": 0,
+    "max": 30
+  }
+},
+{
+  "action": "test",
+  "zone": {
+    "type": "SingleStationZone",
+    "station": "00000000acb63522",
+    "peripheral": "JinouBeacon",
+    "min": 45
+  }
+}]

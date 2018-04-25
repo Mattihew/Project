@@ -16,7 +16,11 @@ public enum Props
     SingleStationZone_Station("SingleStationZoneFactory.station"),
     SingleStationZone_Peripheral("SingleStationZoneFactory.peripheral"),
     SingleStationZone_Min("SingleStationZoneFactory.min"),
-    SingleStationZone_Max("SingleStationZoneFactory.max");
+    SingleStationZone_Max("SingleStationZoneFactory.max"),
+
+    MultiStationZone_Type("MultiStationZoneFactory.type"),
+    MultiStationZone_Method("MultiStationZoneFactory.method"),
+    MultiStationZone_Zones("MultiStationZoneFactory.zones");
 
     private static final Properties propsFile = new Properties();
 

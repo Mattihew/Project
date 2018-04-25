@@ -1,4 +1,4 @@
-package com.mattihew.model.zones.Factory;
+package com.mattihew.model.zones.factory;
 
 import com.mattihew.Props;
 import com.mattihew.model.Vertex;
@@ -6,8 +6,12 @@ import com.mattihew.model.zones.SingleStationZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SingleStationZoneFactory implements ZoneFactory<SingleStationZone>
+public class SingleStationZoneFactory implements ZoneTypeFactory<SingleStationZone>
 {
+    SingleStationZoneFactory()
+    {
+        super();
+    }
 
     @Override
     public boolean isValidJson(final JSONObject json)

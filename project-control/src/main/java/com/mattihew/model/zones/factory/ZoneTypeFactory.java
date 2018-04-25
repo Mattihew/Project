@@ -1,9 +1,9 @@
-package com.mattihew.model.zones.Factory;
+package com.mattihew.model.zones.factory;
 
 import com.mattihew.model.zones.Zone;
 import org.json.JSONObject;
 
-public interface ZoneFactory<Z extends Zone>
+interface ZoneTypeFactory<Z extends Zone>
 {
     public abstract boolean isValidJson(final JSONObject json);
 
