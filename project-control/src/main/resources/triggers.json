@@ -10,10 +10,14 @@
 },
 {
   "action": "test",
-  "zone": {
-    "type": "SingleStationZone",
-    "station": "00000000acb63522",
-    "peripheral": "JinouBeacon",
-    "min": 45
+  "zone" : {
+    "type": "NullIncludingZone",
+    "zone": {
+      "type": "SingleStationZone",
+      "station": "00000000acb63522",
+      "peripheral": "JinouBeacon",
+      "min": 45
+    }
   }
+
 }]

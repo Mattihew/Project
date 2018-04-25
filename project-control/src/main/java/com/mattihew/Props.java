@@ -20,7 +20,10 @@ public enum Props
 
     MultiStationZone_Type("MultiStationZoneFactory.type"),
     MultiStationZone_Method("MultiStationZoneFactory.method"),
-    MultiStationZone_Zones("MultiStationZoneFactory.zones");
+    MultiStationZone_Zones("MultiStationZoneFactory.zones"),
+
+    NullIncludingZone_Type("NullIncludingZoneFactory.type"),
+    NullIncludingZone_Zone("NullIncludingZoneFactory.zone");
 
     private static final Properties propsFile = new Properties();
 

@@ -14,12 +14,18 @@ public class ZoneFactory
     {
         factories = Arrays.asList(
                 new SingleStationZoneFactory(),
-                new MultiStationZoneFactory());
+                new MultiStationZoneFactory(),
+                new NullIncludedZoneFactory());
     }
 
     private ZoneFactory()
     {
 
+    }
+
+    public static Zone fromJson(final String json)
+    {
+        return ZoneFactory.fromJson(new JSONObject(json));
     }
 
     public static Zone fromJson(final JSONObject json)
