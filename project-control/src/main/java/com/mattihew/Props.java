@@ -10,6 +10,9 @@ public enum Props
     HueMethod("hue.method"),
     PointCacheMaxAge("pointCache.maxAge"),
 
+    Trigger_Action("Trigger.action"),
+    Trigger_Zone("Trigger.zone"),
+
     ZoneFactory_Type("ZoneFactory.type"),
 
     SingleStationZone_Type("SingleStationZoneFactory.type"),
