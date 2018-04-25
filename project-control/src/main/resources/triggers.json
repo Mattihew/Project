@@ -1,5 +1,9 @@
 [{
-  "action": "test",
+  "action": {
+    "type": "HueAction",
+    "light": 3,
+    "on": true
+  },
   "zone": {
     "type": "SingleStationZone",
     "station": "00000000acb63522",
@@ -9,7 +13,11 @@
   }
 },
 {
-  "action": "test",
+  "action": {
+    "type": "HueAction",
+    "light": 3,
+    "on": false
+  },
   "zone" : {
     "type": "NullIncludingZone",
     "zone": {

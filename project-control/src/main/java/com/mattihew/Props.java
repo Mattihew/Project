@@ -23,7 +23,13 @@ public enum Props
     MultiStationZone_Zones("MultiStationZoneFactory.zones"),
 
     NullIncludingZone_Type("NullIncludingZoneFactory.type"),
-    NullIncludingZone_Zone("NullIncludingZoneFactory.zone");
+    NullIncludingZone_Zone("NullIncludingZoneFactory.zone"),
+
+    ActionFactory_Type("ActionFactory.type"),
+
+    HueActionFactory_Type("HueActionFactory.type"),
+    HueActionFactory_Light("HueActionFactory.light"),
+    HueActionFactory_On("HueActionFactory.on");
 
     private static final Properties propsFile = new Properties();
 

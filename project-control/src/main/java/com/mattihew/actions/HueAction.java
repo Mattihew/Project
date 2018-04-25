@@ -1,6 +1,7 @@
 package com.mattihew.actions;
 
 import com.mattihew.Props;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,6 +54,22 @@ public class HueAction implements Action
         catch (final IOException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    public static class HueActionFactory extends ActionFactory.AbstractActionFactory<HueAction>
+    {
+        HueActionFactory()
+        {
+            super();
+        }
+
+        @Override
+        public HueAction fromJson(final JSONObject json)
+        {
+            final int light = json.getInt(Props.HueActionFactory_Light.getValue());
+            final boolean on = json.optBoolean(Props.HueActionFactory_On.getValue(), true);
+            return new HueAction(light, on);
         }
     }
 }
