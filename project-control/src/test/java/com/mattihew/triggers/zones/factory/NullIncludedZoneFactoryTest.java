@@ -1,7 +1,6 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
 import com.mattihew.triggers.zones.NullIncludedZone;
-import com.mattihew.triggers.zones.factory.ZoneFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

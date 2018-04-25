@@ -1,11 +1,10 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
 import com.mattihew.triggers.zones.MultiStationZone;
-import com.mattihew.triggers.zones.factory.ZoneFactory;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class MultiStationZoneFactoryTest
 {
