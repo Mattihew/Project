@@ -1,4 +1,4 @@
-package com.mattihew.actions;
+package com.mattihew.triggers.actions;
 
 import java.io.PrintStream;
 

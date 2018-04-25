@@ -1,14 +1,14 @@
 package com.mattihew;
 
-import com.mattihew.actions.Action;
-import com.mattihew.actions.HueAction;
+import com.mattihew.triggers.actions.Action;
+import com.mattihew.triggers.actions.HueAction;
 import com.mattihew.model.PointCache;
-import com.mattihew.model.zones.NullIncludedZone;
+import com.mattihew.triggers.zones.NullIncludedZone;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.mattihew.model.Vertex;
-import com.mattihew.model.zones.SingleStationZone;
-import com.mattihew.model.zones.Zone;
+import com.mattihew.triggers.zones.SingleStationZone;
+import com.mattihew.triggers.zones.Zone;
 import com.mattihew.rabbit.RabbitListener;
 import com.mattihew.services.Service;
 

@@ -1,8 +1,8 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
 import com.mattihew.Props;
-import com.mattihew.model.zones.NullIncludedZone;
-import com.mattihew.model.zones.Zone;
+import com.mattihew.triggers.zones.NullIncludedZone;
+import com.mattihew.triggers.zones.Zone;
 import org.json.JSONException;
 import org.json.JSONObject;
 

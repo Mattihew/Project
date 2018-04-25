@@ -1,4 +1,4 @@
-package com.mattihew.model.zones;
+package com.mattihew.triggers.zones;
 
 import com.mattihew.model.Point;
 

@@ -1,6 +1,6 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
-import com.mattihew.model.zones.Zone;
+import com.mattihew.triggers.zones.Zone;
 import org.json.JSONObject;
 
 import java.util.Arrays;

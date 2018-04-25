@@ -1,6 +1,7 @@
 package com.mattihew.model.zones.factory;
 
-import com.mattihew.model.zones.MultiStationZone;
+import com.mattihew.triggers.zones.MultiStationZone;
+import com.mattihew.triggers.zones.factory.ZoneFactory;
 import org.json.JSONObject;
 import org.junit.Test;
 

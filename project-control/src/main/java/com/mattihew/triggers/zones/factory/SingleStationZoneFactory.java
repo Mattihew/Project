@@ -1,8 +1,8 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
 import com.mattihew.Props;
 import com.mattihew.model.Vertex;
-import com.mattihew.model.zones.SingleStationZone;
+import com.mattihew.triggers.zones.SingleStationZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 

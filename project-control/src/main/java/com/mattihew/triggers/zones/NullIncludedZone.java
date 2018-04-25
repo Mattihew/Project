@@ -1,11 +1,8 @@
-package com.mattihew.model.zones;
+package com.mattihew.triggers.zones;
 
 import com.mattihew.model.Point;
 
 import java.util.Objects;
-
-import static com.mattihew.model.zones.Zone.State.IN;
-import static com.mattihew.model.zones.Zone.State.NULL;
 
 public class NullIncludedZone extends Zone
 {
@@ -20,7 +17,7 @@ public class NullIncludedZone extends Zone
     public State inRange(final Point point)
     {
         final State state = this.zone.inRange(point);
-        return state.equals(NULL) ? IN : state;
+        return state.equals(State.NULL) ? State.IN : state;
     }
 
     @Override

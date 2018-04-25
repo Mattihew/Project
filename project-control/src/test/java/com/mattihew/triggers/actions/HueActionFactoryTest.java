@@ -1,4 +1,4 @@
-package com.mattihew.actions;
+package com.mattihew.triggers.actions;
 
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;

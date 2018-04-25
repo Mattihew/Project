@@ -1,8 +1,8 @@
-package com.mattihew.model.zones.factory;
+package com.mattihew.triggers.zones.factory;
 
 import com.mattihew.Props;
-import com.mattihew.model.zones.MultiStationZone;
-import com.mattihew.model.zones.Zone;
+import com.mattihew.triggers.zones.MultiStationZone;
+import com.mattihew.triggers.zones.Zone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
