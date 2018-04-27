@@ -14,6 +14,7 @@ public class main
 {
     public static void main (final String... args) throws IOException, TimeoutException
     {
+        System.out.println("Starting");
         final ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("192.168.0.100");
         factory.setUsername("demo");
@@ -28,5 +29,6 @@ public class main
 
         final TriggerFileReader fileReader = new TriggerFileReader(service);
         fileReader.readFile(ClassLoader.getSystemResourceAsStream("triggers.json")); //NON-NLS
+        System.out.println("Started");
     }
 }
