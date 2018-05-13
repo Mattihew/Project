@@ -1,8 +1,9 @@
 [{
   "action": {
     "type": "HueAction",
-    "light": 5,
-    "on": true
+    "light": 3,
+    "on": true,
+    "hue": 25500
   },
   "zone": {
     "type": "SingleStationZone",
@@ -15,9 +16,13 @@
 {
   "action": [{
     "type": "HueAction",
-    "light": 5,
-    "on": false
-  },
+    "light": 3,
+    "on": true,
+    "hue" : 0
+  },{
+    "type": "console",
+    "msg": "out of range"
+  }],
   "zone" : {
     "type": "NullIncludingZone",
     "zone": {
