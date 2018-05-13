@@ -14,15 +14,30 @@ import java.nio.charset.StandardCharsets;
 
 public class HueAction implements Action
 {
+    private static String ON_KEY = "on";
+    private static String BRI_KEY = "bri";
+    private static String HUE_KEY = "hue";
+    private static String SAT_KEY = "sat";
+
     private URL url;
     private byte[] body;
 
     public HueAction(final int light, final boolean turnOn)
     {
+        this(light, turnOn, null, null, null);
+    }
+
+    public HueAction(final int light, final Boolean turnOn, final Byte brightness, final Short hue, final Byte saturation)
+    {
         try
         {
             this.url = new URL(Props.HueURL.format(light));
-            this.body = Props.HueBody.format(turnOn).getBytes(StandardCharsets.UTF_8);
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put(ON_KEY, turnOn);
+            jsonBody.put(BRI_KEY, brightness);
+            jsonBody.put(HUE_KEY, hue);
+            jsonBody.put(SAT_KEY, saturation);
+            this.body = jsonBody.toString().getBytes(StandardCharsets.UTF_8);
         }
         catch (final MalformedURLException e)
         {
@@ -68,8 +83,16 @@ public class HueAction implements Action
         public HueAction fromJson(final JSONObject json)
         {
             final int light = json.getInt(Props.HueActionFactory_Light.getValue());
-            final boolean on = json.optBoolean(Props.HueActionFactory_On.getValue(), true);
-            return new HueAction(light, on);
+            final Object onObj = json.opt(ON_KEY);
+            final Object briObj = json.opt(BRI_KEY);
+            final Object hueObj = json.opt(HUE_KEY);
+            final Object satObj = json.opt(SAT_KEY);
+
+            final Boolean on = onObj instanceof Boolean ? (Boolean) onObj : null;
+            final Byte bri = briObj instanceof Number ? ((Number) briObj).byteValue() : null;
+            final Short hue = hueObj instanceof Number ? ((Number) hueObj).shortValue() : null;
+            final Byte sat = satObj instanceof Number ? ((Number) satObj).byteValue() : null;
+            return new HueAction(light, on, bri, hue, sat);
         }
     }
 }

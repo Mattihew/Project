@@ -5,6 +5,7 @@ import com.mattihew.triggers.actions.Action;
 import com.mattihew.triggers.actions.ActionFactory;
 import com.mattihew.triggers.zones.Zone;
 import com.mattihew.triggers.zones.factory.ZoneFactory;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Trigger
@@ -20,7 +21,7 @@ public class Trigger
 
     public Trigger(final JSONObject json)
     {
-        final JSONObject actionJson = parseAction(json);
+        final Object actionJson = parseAction(json);
         final JSONObject zoneJson = parseZone(json);
 
         this.action = ActionFactory.fromJson(actionJson);
@@ -28,9 +29,16 @@ public class Trigger
 
     }
 
-    public static JSONObject parseAction(final JSONObject json)
+    public static Object parseAction(final JSONObject json)
     {
-        return json.getJSONObject(Props.Trigger_Action.getValue());
+        try
+        {
+            return json.getJSONObject(Props.Trigger_Action.getValue());
+        }
+        catch (final JSONException e)
+        {
+            return json.getJSONArray(Props.Trigger_Action.getValue());
+        }
     }
 
     public static JSONObject parseZone(final JSONObject json)

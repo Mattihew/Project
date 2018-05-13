@@ -1,5 +1,7 @@
 package com.mattihew.triggers.actions;
 
+import org.json.JSONObject;
+
 import java.io.PrintStream;
 
 public class ConsoleAction implements Action
@@ -21,6 +23,21 @@ public class ConsoleAction implements Action
     @Override
     public void trigger()
     {
-        this.stream.print(this.msg);
+        this.stream.println(this.msg);
+    }
+
+    public static class ConsoleActionFactory extends ActionFactory.AbstractActionFactory<ConsoleAction>
+    {
+        ConsoleActionFactory()
+        {
+            super();
+        }
+
+        @Override
+        public ConsoleAction fromJson(final JSONObject json)
+        {
+            final String msg = json.getString("msg");
+            return new ConsoleAction(msg);
+        }
     }
 }

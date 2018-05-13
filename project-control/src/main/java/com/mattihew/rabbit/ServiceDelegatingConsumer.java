@@ -6,6 +6,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.mattihew.model.edge.Edge;
 import com.mattihew.model.Vertex;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import com.mattihew.services.Service;
@@ -41,24 +42,31 @@ public class ServiceDelegatingConsumer extends DefaultConsumer
     public void handleDelivery(final String consumerTag, final Envelope envelope,
                                final AMQP.BasicProperties properties, final byte[] body) throws IOException
     {
-        final JSONObject value = new JSONObject(new JSONTokener(new InputStreamReader(
-                new ByteArrayInputStream(body),
-                Objects.toString(properties.getContentEncoding(), StandardCharsets.UTF_8.name()))));
-
-        if (!this.services.isEmpty())
+        try
         {
-            final Edge newEdge = new Edge(
-                    new Vertex(value.getString("device")),
-                    new Vertex(value.getString("id")),
-                    -value.getInt("rssi")-50,
-                    value.optLong("time", System.currentTimeMillis()));
+            final JSONObject value = new JSONObject(new JSONTokener(new InputStreamReader(
+                    new ByteArrayInputStream(body),
+                    Objects.toString(properties.getContentEncoding(), StandardCharsets.UTF_8.name()))));
 
-            for(Service service : this.services)
+            if (!this.services.isEmpty())
             {
-                service.addPeripheralEdge(newEdge);
-            }
-        }
+                final Edge newEdge = new Edge(
+                        new Vertex(value.getString("device")),
+                        new Vertex(value.getString("id")),
+                        -value.getInt("rssi")-50,
+                        value.optLong("time", System.currentTimeMillis()));
 
-        this.getChannel().basicAck(envelope.getDeliveryTag(), false);
+                for(Service service : this.services)
+                {
+                    service.addPeripheralEdge(newEdge);
+                }
+            }
+
+            this.getChannel().basicAck(envelope.getDeliveryTag(), false);
+        }
+        catch (final JSONException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

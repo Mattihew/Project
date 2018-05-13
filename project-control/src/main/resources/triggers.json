@@ -13,7 +13,7 @@
   }
 },
 {
-  "action": {
+  "action": [{
     "type": "HueAction",
     "light": 5,
     "on": false
@@ -27,5 +27,4 @@
       "min": 45
     }
   }
-
 }]
