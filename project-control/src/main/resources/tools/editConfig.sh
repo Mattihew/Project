@@ -9,7 +9,7 @@ do
     echo -e "${COL}c${NC}: config.properties"
     echo -e "${COL}t${NC}: triggers.json"
     echo -en "choice: ${COL}"
-    read -n 1 choice
+    read -n1 choice
     echo -e "${NC}"
 done
 
