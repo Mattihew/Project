@@ -3,6 +3,7 @@ var config = require('../config.json');
 
 var submitter;
 var receivers = {};
+var timeouts = {};
 
 amqp.connect(config.rabbit.url)
 .then(function(conn)
@@ -22,30 +23,50 @@ amqp.connect(config.rabbit.url)
         {
             submitter = function(msg, corr)
             {
-                ch.publish(ex.exchange, '', Buffer.from(msg, 'UTF-8'), {correlationId: corr.toString(), replyTo: q.queue});
+                ch.publish(ex.exchange, '', Buffer.from(msg, 'UTF-8'), {correlationId: corr, replyTo: q.queue});
             };
         });
 
         ch.consume(q.queue, function(msg)
         {
-            if (receivers.hasOwnProperty(msg.properties.correlationId))
+            var corr = msg.properties.correlationId;
+            if (timeouts.hasOwnProperty(corr))
             {
-                receivers[msg.properties.correlationId](msg.content.toString('UTF-8'));
-                delete receivers[msg.properties.correlationId];
+                clearTimeout(timeouts[corr]);
+                delete timeouts[corr];
+            }
+            if (receivers.hasOwnProperty(corr))
+            {
+                receivers[corr](msg.content.toString('UTF-8'));
+                delete receivers[corr];
             }
             ch.ack(msg);
         },{noAck: false});
     });
 });
 
-function request(msg, callback, corr)
+function request(msg, callback, err)
 {
+    var corr = Math.random().toString().substr(2);
     if (typeof callback === 'function')
     {
-        corr = corr || Math.random();
         receivers[corr] = callback;
+        if (typeof err === 'function')
+        {
+            timeouts[corr] = setTimeout(function(){
+                delete timeouts[corr];
+                err();
+            }, config.rabbit.timeout);
+        }
     }
-    submitter(msg, corr);
+    if (typeof submitter === 'function')
+    {
+        submitter(msg, corr);
+    }
+    else if (typeof err === 'function')
+    {
+        err();
+    }
 }
 
-module.exports = request;
+module.exports = exports = request;
