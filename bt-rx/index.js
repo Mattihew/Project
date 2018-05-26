@@ -73,7 +73,7 @@ noble.on('discover', function(perf)
     if (typeof channel !== 'undefined')
     {
         var data = {id: serialNumber, device: perf.advertisement.localName || 'undefined', rssi: perf.rssi, time: Date.now()};
-        channel.publish(config.rabbit.exchange, '', Buffer.from(JSON.stringify(data), 'UTF-8'));
+        channel.publish(config.rabbit.exchange, '', Buffer.from(JSON.stringify(data), 'UTF-8'), {timestamp:data.time});
     }
 });
 

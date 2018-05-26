@@ -18,7 +18,7 @@ amqp.connect(config.rabbit.url)
     ch.assertQueue('', {exclusive: true, durable: false, autoDelete: true})
     .then(function(q)
     {
-        ch.assertExchange(config.rabbit.ex, 'fanout', {durable: false, autoDelete: true})
+        ch.assertExchange(config.rabbit.rpc.ex, 'fanout', {durable: false, autoDelete: true})
         .then(function(ex)
         {
             submitter = function(msg, corr)
@@ -43,7 +43,7 @@ amqp.connect(config.rabbit.url)
             ch.ack(msg);
         },{noAck: false});
     });
-});
+}).catch(console.warn);
 
 function request(msg, callback, err)
 {
@@ -56,7 +56,7 @@ function request(msg, callback, err)
             timeouts[corr] = setTimeout(function(){
                 delete timeouts[corr];
                 err();
-            }, config.rabbit.timeout);
+            }, config.rabbit.rpc.timeout);
         }
     }
     if (typeof submitter === 'function')

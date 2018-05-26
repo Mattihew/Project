@@ -42,7 +42,7 @@ public class RpcServer
                         "",
                         properties.getReplyTo(),
                         replyProps,
-                        "hello world".getBytes(StandardCharsets.UTF_8));
+                        body);
                 this.getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
         });

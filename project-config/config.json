@@ -1,7 +1,12 @@
 {
   "rabbit" : {
     "url" : "amqp://demo:demo@192.168.0.100",
-    "ex" : "testQ",
-    "timeout": 5000
+    "rpc": {
+      "ex" : "testQ",
+      "timeout": 5000
+    },
+    "listen": {
+      "ex" : "rx"
+    }
   }
 }

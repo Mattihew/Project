@@ -2,6 +2,7 @@ package com.mattihew;
 
 import com.mattihew.model.PointCache;
 import com.mattihew.rabbit.RabbitListener;
+import com.mattihew.rabbit.RpcServer;
 import com.mattihew.services.Service;
 import com.mattihew.services.TriggerFileReader;
 import com.rabbitmq.client.Connection;
@@ -26,6 +27,9 @@ public class main
         listener.start(connection);
         listener.addService(service);
         PointCache.addService(service);
+
+        final RpcServer rpcServer = new RpcServer();
+        rpcServer.start(connection);
 
         final TriggerFileReader fileReader = new TriggerFileReader(service);
         fileReader.readFile(ClassLoader.getSystemResourceAsStream("triggers.json")); //NON-NLS
