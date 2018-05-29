@@ -4,7 +4,7 @@ import com.mattihew.model.PointCache;
 import com.mattihew.rabbit.RabbitListener;
 import com.mattihew.rabbit.RpcServer;
 import com.mattihew.services.Service;
-import com.mattihew.services.TriggerFileReader;
+import com.mattihew.services.TriggerStore;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
@@ -31,7 +31,7 @@ public class main
         final RpcServer rpcServer = new RpcServer();
         rpcServer.start(connection);
 
-        final TriggerFileReader fileReader = new TriggerFileReader(service);
+        final TriggerStore fileReader = new TriggerStore(service);
         fileReader.readFile(ClassLoader.getSystemResourceAsStream("triggers.json")); //NON-NLS
         System.out.println("Started");
     }
