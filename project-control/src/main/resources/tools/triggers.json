@@ -1,0 +1,35 @@
+[{
+  "action": {
+    "type": "HueAction",
+    "light": 3,
+    "on": true,
+    "hue": 25500
+  },
+  "zone": {
+    "type": "SingleStationZone",
+    "station": "00000000acb63522",
+    "peripheral": "JinouBeacon",
+    "min": 0,
+    "max": 30
+  }
+},
+{
+  "action": [{
+    "type": "HueAction",
+    "light": 3,
+    "on": true,
+    "hue" : 0
+  },{
+    "type": "console",
+    "msg": "out of range"
+  }],
+  "zone" : {
+    "type": "NullIncludingZone",
+    "zone": {
+      "type": "SingleStationZone",
+      "station": "00000000acb63522",
+      "peripheral": "JinouBeacon",
+      "min": 45
+    }
+  }
+}]
